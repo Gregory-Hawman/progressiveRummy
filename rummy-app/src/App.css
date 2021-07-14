@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-logo {
@@ -35,4 +43,43 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.deckArea {
+  display: flex;
+}
+
+.deck {
+  width: 14rem;
+  height: 20rem;
+  background-color: pink;
+  border-radius: 15px;
+}
+
+.deck h1{
+  margin: 7rem 0 0;
+}
+
+.discard {
+  width: 14rem;
+  height: 20rem;
+  background-color: skyblue;
+  border-radius: 15px;
+}
+
+.discard h1{
+  color: red;
+  margin: 7rem 0 0;
+}
+
+.counters {
+  display: flex;
+  justify-content: space-around;
+}
+
+.drawn {
+  display: flex;
+}
+.drawn  button {
+  height: 1.5rem;
 }
