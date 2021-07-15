@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import './App.css';
+// import React, { useState } from 'react';
+// import './App.css';
 
-function Player () {
-    return (
-        <div>
+// function Player (name) {
+//     const hand = {}
+//     return (
+//         <div>
             
-        </div>
-    )
-}
+//         </div>
+//     )
+// }

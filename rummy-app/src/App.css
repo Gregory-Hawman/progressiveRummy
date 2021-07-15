@@ -83,3 +83,11 @@
 .drawn  button {
   height: 1.5rem;
 }
+
+.players {
+  display: flex;
+}
+
+.players div{
+  margin: 0rem 5rem
+}
