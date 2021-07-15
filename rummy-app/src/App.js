@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import './App.css';
 
 const suits = ['S', 'H', 'C', 'D'];
 const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 const cards = [];
-const numOfDecks = 2;
-const jokers = numOfDecks*2
+let hasCardDrawn = false
+// const numOfDecks = 2;
+// const jokers = numOfDecks*2
 
 
 
@@ -19,8 +20,6 @@ for(let i=0; i < suits.length; i++) {
     cards.push(`${values[j]}${suits[i]} `)
   };
 };
-
-console.log(cards);
 
 function App() {
   const [drawPile, setDrawPile] = useState(cards);
@@ -28,29 +27,55 @@ function App() {
   const [drawnCard, setDrawnCard] = useState([])
   const [drawCount, setDrawCount] = useState(cards.length);
   const [discardCount, setDiscardCount] = useState(discardPile.length);
-  console.log(discardCount)
+  const [playerCount, setPlayerCount] = useState(4);
   
   function Shuffle(array) {
     var m = array.length, t, i;
-  
     // While there remain elements to shuffle…
     while (m) {
-  
       // Pick a remaining element…
       i = Math.floor(Math.random() * m--);
-  
       // And swap it with the current element.
       t = array[m];
       array[m] = array[i];
       array[i] = t;
     }
-  
     setDrawPile(array);
+  }
+
+  function DealCards () {
+    Shuffle(cards)
+
+  }
+
+  const less = '<'
+  const more = '>'
+
+  const addPlayers = () => {
+    if ( playerCount === 8){
+      return null
+    } else {
+      setPlayerCount(playerCount + 1)
+    }
+  }
+  const removePlayers = () => {
+    if (playerCount === 2){
+      return null
+    } else {
+      setPlayerCount(playerCount - 1)
+    }
   }
 
   return (
     <div className="App">
       <header className="App-header">
+        <div>
+          <h2>How many Players?</h2>
+          <button onClick={removePlayers}> {less} </button>
+          {playerCount}
+          <button onClick={addPlayers}> {more} </button>
+        </div>
+        <button onClick={DealCards}>Deal</button>
         <button onClick={() => Shuffle(cards)}>Shuffle</button>
         <Deck 
           drawPile={drawPile}
@@ -65,6 +90,7 @@ function App() {
           drawnCard={drawnCard}
           setDrawnCard={setDrawnCard}
           discardPile={discardPile}
+          setDiscardPile={setDiscardPile}
           discardCount={discardCount}
           setDiscardCount={setDiscardCount}
         />
@@ -75,23 +101,31 @@ function App() {
 }
 
 function Deck({ drawPile, drawCount, setDrawCount, setDrawnCard, discardPile, discardCount, setDiscardCount }) {
-  console.log(drawPile)
+
   const handleDrawCard = () => {
     let drawnCard = drawPile.shift()
+    hasCardDrawn = true
     setDrawCount(drawCount - 1)
+    setDrawnCard(drawnCard)
+  }
+
+  const handleDiscardDraw = () => {
+    let drawnCard = discardPile.shift()
+    hasCardDrawn = true
+    setDiscardCount(discardCount - 1)
     setDrawnCard(drawnCard)
   }
 
   return (
     <div>
       <div className='deckArea'>
-        <div className='deck' onClick={handleDrawCard}>
+        <div className='deck' onClick={hasCardDrawn ? null : handleDrawCard}>
           <DeckCards 
             drawPile={drawPile}
             setDrawnCard={setDrawnCard}
           />
         </div>
-        <div className='discard'>
+        <div className='discard' onClick={hasCardDrawn ? null : handleDiscardDraw}>
           <DiscardCards
             discardPile={discardPile}
             discardCount={discardCount}
@@ -118,10 +152,12 @@ function DeckCards({ drawPile }) {
 }
 
 function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDiscardCount }) {
+
   const discardCard = () => {
     discardPile.splice(0, 0, drawnCard)
     setDiscardCount(discardCount + 1)
-    setDrawnCard([])
+    hasCardDrawn = false
+    setDrawnCard([])    
   }
 
   return (
@@ -130,12 +166,13 @@ function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDisc
       <div className='discard'>
         <h1>{drawnCard}</h1>
       </div>
-      <button onClick={discardCard}>Discard</button>
+      <button onClick={hasCardDrawn ? discardCard : null}>Discard</button>
     </div>
   )
 }
 
 function DiscardCards({ discardPile }) {
+
   const checkRed = () => {
     // parce through the value
     // if value has H || D then its red
