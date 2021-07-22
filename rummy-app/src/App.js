@@ -3,6 +3,7 @@ import './App.css';
 import Deck from './components/deck';
 import Discards from './components/discards';
 import DrawnCard from './components/drawnCard';
+import DealCards from './components/deal';
 
 const suits = ['S', 'H', 'C', 'D'];
 const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
@@ -35,7 +36,8 @@ function App() {
 
   const [playerCount, setPlayerCount] = useState(4);
   const [round, setRound] = useState(3);
-  
+  const [hand, setHand] = useState(['AS','2S','3S'])
+  console.log(hand);
   function Shuffle(array) {
     var m = array.length, t, i;
     // While there remain elements to shuffle…
@@ -49,11 +51,6 @@ function App() {
     }
     setDeckPile(array);
   }
-
-  // function DealCards () {
-  //   Shuffle(cards)
-
-  // }
 
   const less = '<'
   const more = '>'
@@ -131,17 +128,54 @@ function App() {
 
         <div>
           {/* <DealCards 
-          drawPile={deckPile}
-          playerCount={playerCount}
-          round={round}
-          setDeckCount={setDeckCount}
+            drawPile={deckPile}
+            playerCount={playerCount}
+            round={round}
+            setDeckCount={setDeckCount}
           /> */}
         </div>
-        
-        
+
+        <div>
+          <Players 
+            hand={hand}
+            playerCount={playerCount}
+          />
+        </div>
+
       </header>
     </div>
   );
+}
+
+function Players ({ hand, playerCount }) {
+  const playersArray = Array.from({length: playerCount}, (_, index) => index + 1);
+  console.log(playersArray)
+  
+  return (
+    <div className='players'>
+      {playersArray.map((player, index) => {
+
+        return (
+          <div key={index}>
+            <h3>Player {player}</h3>
+            <div className= 'hand'>
+              <Hand 
+              hand={hand}
+              />
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function Hand ({hand}) {
+  return (
+    <div> 
+      {hand}
+    </div>
+  )
 }
 
 export default App;
