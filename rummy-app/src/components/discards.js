@@ -1,5 +1,3 @@
-import React from 'react';
-import '..//App.css';
 
 function Discards({ discardPile, setDiscardPile, discardCount, setDiscardCount, setDrawnCard, hasCardDrawn, setHasCardDrawn }) {
     const handleDiscardDraw = () => {
