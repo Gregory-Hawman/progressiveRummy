@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 function Discards({ discardPile, setDiscardPile, discardCount, setDiscardCount, setDrawnCard, hasCardDrawn, setHasCardDrawn, isDiscardRed}) {
-  console.log(discardPile)
 
   const handleDiscardDraw = () => {
     let drawnCard = discardPile.shift()

@@ -7,7 +7,7 @@ import DealCards from './components/deal';
 
 const suits = ['S', 'H', 'C', 'D'];
 const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
-const jokers = ['JR', 'JB']
+const jokers = ['JoR', 'JoB']
 let cards = [];
 const playersList = [
   {name: 'Player 1', hand: []},
@@ -22,20 +22,18 @@ const playersList = [
 
 
 function App() {
-  //Game Setup State
-  const [playerCount, setPlayerCount] = useState(4);
-  const [playersSelected, setPlayersSelected] = useState(false)
-  const [deckAmount, setDeckAmount] = useState(2);
+  //General State
   const [deckPile, setDeckPile] = useState(cards);
-  const [discardPile, setDiscardPile] = useState([])
-  const [drawnCard, setDrawnCard] = useState([])
-  const [hasCardDrawn, setHasCardDrawn] = useState(false)
+  const [discardPile, setDiscardPile] = useState([]);
   const [deckCount, setDeckCount] = useState(cards.length);
   const [discardCount, setDiscardCount] = useState(discardPile.length);
+  const [isRed, setIsRed] = useState(false);
+  const [isDiscardRed, setIsDiscardRed] = useState(false);
 
-  const [isRed, setIsRed] = useState(false)
-  const [isDiscardRed, setIsDiscardRed] = useState()
-  
+  //Game Setup State
+  const [playerCount, setPlayerCount] = useState(4);
+  const [playerAmountSelected, setPlayerAmountSelected] = useState(false);
+  const [lessPlayers, setLessPlayers] = useState(true)
 
   //Deal Phase State
   const [round, setRound] = useState(1);
@@ -44,27 +42,29 @@ function App() {
   
   //Playing Phase State
   const [currentPlayer, setCurrentPlayer] = useState(startingPosition)
+  const [drawnCard, setDrawnCard] = useState([]);
+  const [hasCardDrawn, setHasCardDrawn] = useState(false);
   
   //Last Card Phase State
   const [initialOut, setInitialOut] = useState(currentPlayer)
   const [gameOver, setGameOver] = useState(false)
 
-  function setDecks() {
-    let d = 0
-    while ( d < deckAmount ) {
-      for(let i=0; i < suits.length; i++) {
-        for(let j=0; j < values.length; j++) {
-          cards.push(`${values[j]}${suits[i]} `)
-        }
-      }
-      for (let i=0; i < jokers.length; i++ ) {
-        cards.push(`${jokers[i]}`)
-      }
-      d++;
-    }
-  };
 
-  setDecks();
+  function addPlayers () {
+    if ( playerCount === 8){
+      return null
+    } else {
+      setPlayerCount(playerCount + 1)
+    }
+  }
+
+  function removePlayers () {
+    if (playerCount === 2){
+      return null
+    } else {
+      setPlayerCount(playerCount - 1)
+    }
+  }
 
   function Shuffle(array) {
     var m = array.length, t, i;
@@ -83,52 +83,39 @@ function App() {
   const less = '<'
   const more = '>'
 
-  const addPlayers = () => {
-    if ( playerCount === 8){
-      return null
+  function readyUp() {
+    setPlayerAmountSelected(!playerAmountSelected)
+    if(playerCount === 2) {
+      setDecks(2)
     } else {
-      // if (playerCount > 4){
-      //   cards = []
-      //   setDeckAmount(3)
-      //   setDecks()
-      //   setDeckCount(cards.length)
-      // } else if (playerCount > 6){
-      //   cards = []
-      //   setDeckAmount(4)
-      //   setDecks()
-      //   setDeckCount(cards.length);
-      // }
-      setPlayerCount(playerCount + 1) 
+      setDecks(Math.ceil(playerCount/2))
     }
+    setDeckCount(cards.length)
   }
 
-  const removePlayers = () => {
-    if (playerCount === 2){
-      return null
-    } else {
-      // if (playerCount < 7){
-      //   cards = []
-      //   setDeckAmount(3)
-      //   setDecks()
-      //   setDeckCount(cards.length)
-      // } else if (playerCount < 5){
-      //   cards = []
-      //   setDeckAmount(2)
-      //   setDecks()
-      //   setDeckCount(cards.length);
-      // }
-      setPlayerCount(playerCount - 1)
+  function setDecks(deckAmount) {
+    let d = 0
+    while ( d < deckAmount ) {
+      for(let i=0; i < suits.length; i++) {
+        for(let j=0; j < values.length; j++) {
+          cards.push(`${values[j]}${suits[i]} `)
+        }
+      }
+      for (let i=0; i < jokers.length; i++ ) {
+        cards.push(`${jokers[i]}`)
+      }
+      d++;
     }
-  }
+  };
 
-  const readyUp = () => {
-    setPlayersSelected(!playersSelected)
-  }
+  // console.log('PLAYER COUNT', playerCount)
+  // console.log('MATH CEIL', Math.ceil(playerCount/2))
+  // console.log('CARDS' ,cards.length)
 
   return (
     <div className="App">
       <header className="App-header">
-        {playersSelected ? 
+        {playerAmountSelected ? 
           null : 
           <div>
             <h2>How many Players?</h2>
@@ -140,7 +127,7 @@ function App() {
         }
         
         
-        {playersSelected ?
+        {playerAmountSelected ?
           <div>
             <div>
               {/* <button onClick={DealCards}>Deal</button> */}
@@ -182,7 +169,7 @@ function App() {
           : null
         }
         
-        {playersSelected ? 
+        {playerAmountSelected ? 
           <div>
             <DrawnCard 
               drawnCard={drawnCard}
@@ -201,7 +188,7 @@ function App() {
           : null
         }
 
-        {playersSelected ? 
+        {playerAmountSelected ? 
           <div>
             <Players 
               playerCount={playerCount}
