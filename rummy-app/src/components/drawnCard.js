@@ -1,24 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '..//App.css';
 
-function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDiscardCount, hasCardDrawn, setHasCardDrawn }) {
+function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDiscardCount, hasCardDrawn, setHasCardDrawn, isRed, setIsDiscardRed }) {
 
-    const discardCard = () => {
-      discardPile.splice(0, 0, drawnCard)
-      setDiscardCount(discardCount + 1)
-      setHasCardDrawn(false)
-      setDrawnCard([])    
-    }
-  
-    return (
-      <div className='drawn'>
+
+  const discardCard = () => {
+    discardPile.splice(0, 0, drawnCard)
+    setDiscardCount(discardCount + 1)
+    setHasCardDrawn(false)
+    setDrawnCard([])
+    if (discardPile[0].includes('H') || discardPile[0].includes('D') || discardPile[0].includes('R')) {
+      setIsDiscardRed(true)
+    } else {
+      setIsDiscardRed(false)
+    }    
+  }
+
+
+  return (
+    <div>
+      <div className='drawnButtons'>
         <button>Keep</button>
-        <div className='discard'>
-          <h1>{drawnCard}</h1>
-        </div>
         <button onClick={hasCardDrawn ? discardCard : null}>Discard</button>
       </div>
-    )
-  }
+      
+      <div className='drawnCard'>
+        <h1 className={isRed ? 'drawnRed' : 'drawnBlack'}>{drawnCard}</h1>
+      </div>
+    </div>
+      
+  )
+}
 
   export default DrawnCard

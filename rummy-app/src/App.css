@@ -57,7 +57,7 @@
 }
 
 .deck h1{
-  margin: 7rem 0 0;
+  padding: 7rem 0 0;
 }
 
 .discard {
@@ -68,8 +68,15 @@
 }
 
 .discard h1{
+  padding: 7rem 0 0;
+}
+
+.discardRed {
   color: red;
-  margin: 7rem 0 0;
+}
+
+.discardBlack {
+  color: black;
 }
 
 .counters {
@@ -77,11 +84,31 @@
   justify-content: space-around;
 }
 
-.drawn {
+.drawnButtons {
   display: flex;
+  justify-content: space-around;
 }
-.drawn  button {
+.drawnButtons button {
   height: 1.5rem;
+}
+
+.drawnCard {
+  width: 14rem;
+  height: 20rem;
+  background-color: skyblue;
+  border-radius: 15px;
+}
+
+.drawnCard h1{
+  padding: 7rem 0 0;
+}
+
+.drawnRed {
+  color: red;
+}
+
+.drawnBlack {
+  color: black;
 }
 
 .players {

@@ -9,23 +9,45 @@ const suits = ['S', 'H', 'C', 'D'];
 const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 const jokers = ['JR', 'JB']
 let cards = [];
-const playersList = ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'Player 5', 'Player 6', 'Player 7', 'Player 8']
+const playersList = [
+  {name: 'Player 1', hand: []},
+  {name: 'Player 2', hand: []},
+  {name: 'Player 3', hand: []},
+  {name: 'Player 4', hand: []},
+  {name: 'Player 5', hand: []},
+  {name: 'Player 6', hand: []},
+  {name: 'Player 7', hand: []},
+  {name: 'Player 8', hand: []},
+]
 
 
 function App() {
+  //Game Setup State
   const [playerCount, setPlayerCount] = useState(4);
+  const [playersSelected, setPlayersSelected] = useState(false)
   const [deckAmount, setDeckAmount] = useState(2);
-
   const [deckPile, setDeckPile] = useState(cards);
   const [discardPile, setDiscardPile] = useState([])
-  
   const [drawnCard, setDrawnCard] = useState([])
   const [hasCardDrawn, setHasCardDrawn] = useState(false)
-
   const [deckCount, setDeckCount] = useState(cards.length);
   const [discardCount, setDiscardCount] = useState(discardPile.length);
 
-  const [round, setRound] = useState(3);
+  const [isRed, setIsRed] = useState(false)
+  const [isDiscardRed, setIsDiscardRed] = useState()
+  
+
+  //Deal Phase State
+  const [round, setRound] = useState(1);
+  const [roundLimit, setRoundLimit] = useState(round + 2)
+  const [startingPosition, setStartingPosition] = useState("Player 1")
+  
+  //Playing Phase State
+  const [currentPlayer, setCurrentPlayer] = useState(startingPosition)
+  
+  //Last Card Phase State
+  const [initialOut, setInitialOut] = useState(currentPlayer)
+  const [gameOver, setGameOver] = useState(false)
 
   function setDecks() {
     let d = 0
@@ -65,17 +87,17 @@ function App() {
     if ( playerCount === 8){
       return null
     } else {
-      if (playerCount > 4){
-        cards = []
-        setDeckAmount(3)
-        setDecks()
-        setDeckCount(cards.length)
-      } else if (playerCount > 6){
-        cards = []
-        setDeckAmount(4)
-        setDecks()
-        setDeckCount(cards.length);
-      }
+      // if (playerCount > 4){
+      //   cards = []
+      //   setDeckAmount(3)
+      //   setDecks()
+      //   setDeckCount(cards.length)
+      // } else if (playerCount > 6){
+      //   cards = []
+      //   setDeckAmount(4)
+      //   setDecks()
+      //   setDeckCount(cards.length);
+      // }
       setPlayerCount(playerCount + 1) 
     }
   }
@@ -84,91 +106,110 @@ function App() {
     if (playerCount === 2){
       return null
     } else {
-      if (playerCount < 7){
-        cards = []
-        setDeckAmount(3)
-        setDecks()
-        setDeckCount(cards.length)
-      } else if (playerCount < 5){
-        cards = []
-        setDeckAmount(2)
-        setDecks()
-        setDeckCount(cards.length);
-      }
+      // if (playerCount < 7){
+      //   cards = []
+      //   setDeckAmount(3)
+      //   setDecks()
+      //   setDeckCount(cards.length)
+      // } else if (playerCount < 5){
+      //   cards = []
+      //   setDeckAmount(2)
+      //   setDecks()
+      //   setDeckCount(cards.length);
+      // }
       setPlayerCount(playerCount - 1)
     }
+  }
+
+  const readyUp = () => {
+    setPlayersSelected(!playersSelected)
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <div>
-          <h2>How many Players?</h2>
-          <button onClick={removePlayers}> {less} </button>
-          {playerCount}
-          <button onClick={addPlayers}> {more} </button>
-        </div>
-        {/* <button onClick={DealCards}>Deal</button> */}
-        <button onClick={() => Shuffle(cards)}>Shuffle</button>
-
-        <div className='deckArea'>
+        {playersSelected ? 
+          null : 
           <div>
-            <Deck 
-              deckPile={deckPile}
-              deckCount={deckCount}
-              setDeckCount={setDeckCount}
+            <h2>How many Players?</h2>
+            <button onClick={removePlayers}> {less} </button>
+            {playerCount}
+            <button onClick={addPlayers}> {more} </button>
+            <button onClick={readyUp}>Ready?</button>
+          </div>
+        }
+        
+        
+        {playersSelected ?
+          <div>
+            <div>
+              {/* <button onClick={DealCards}>Deal</button> */}
+              <button onClick={() => Shuffle(cards)}>Shuffle</button>
+            </div>
+            <div className='deckArea'>
+              
+              <div>
+                <Deck 
+                  deckPile={deckPile}
+                  deckCount={deckCount}
+                  setDeckCount={setDeckCount}
 
+                  setDrawnCard={setDrawnCard}
+                  hasCardDrawn={hasCardDrawn}
+                  setHasCardDrawn={setHasCardDrawn}
+                  setIsRed={setIsRed}
+
+                  discardPile={discardPile}
+                  discardCount={discardCount}
+                  setDiscardCount={setDiscardCount}
+                />
+              </div>
+              
+              <div>
+                <Discards
+                  discardPile={discardPile}
+                  discardCount={discardCount}
+                  setDiscardCount={setDiscardCount}
+
+                  setDrawnCard={setDrawnCard}
+                  hasCardDrawn={hasCardDrawn}
+                  setHasCardDrawn={setHasCardDrawn}
+                  isDiscardRed={isDiscardRed}
+                />
+              </div> 
+            </div>
+          </div>
+          : null
+        }
+        
+        {playersSelected ? 
+          <div>
+            <DrawnCard 
+              drawnCard={drawnCard}
+              isRed={isRed}
+              setIsDiscardRed={setIsDiscardRed}
               setDrawnCard={setDrawnCard}
               hasCardDrawn={hasCardDrawn}
               setHasCardDrawn={setHasCardDrawn}
 
               discardPile={discardPile}
+              setDiscardPile={setDiscardPile}
               discardCount={discardCount}
               setDiscardCount={setDiscardCount}
             />
           </div>
-          
+          : null
+        }
+
+        {playersSelected ? 
           <div>
-            <Discards
-              discardPile={discardPile}
-              discardCount={discardCount}
-              setDiscardCount={setDiscardCount}
-
-              setDrawnCard={setDrawnCard}
-              hasCardDrawn={hasCardDrawn}
-              setHasCardDrawn={setHasCardDrawn}
+            <Players 
+              playerCount={playerCount}
             />
-          </div> 
-        </div>
+          </div>
+          : null
+        }
         
-        <div>
-          <DrawnCard 
-            drawnCard={drawnCard}
-            setDrawnCard={setDrawnCard}
-            hasCardDrawn={hasCardDrawn}
-            setHasCardDrawn={setHasCardDrawn}
-
-            discardPile={discardPile}
-            setDiscardPile={setDiscardPile}
-            discardCount={discardCount}
-            setDiscardCount={setDiscardCount}
-          />
-        </div>
-
-        <div>
-          {/* <DealCards 
-            drawPile={deckPile}
-            playerCount={playerCount}
-            round={round}
-            setDeckCount={setDeckCount}
-          /> */}
-        </div>
-
-        <div>
-          <Players 
-            playerCount={playerCount}
-          />
-        </div>
 
       </header>
     </div>
@@ -176,16 +217,17 @@ function App() {
 }
 
 function Players ({ playerCount }) {
-  console.log('ALL AVAILABLE PLAYERS', playersList)
-  const playersListCopy = playersList
-  const playersArray = playersListCopy
-  console.log('CURRENT PLAYERS', playersArray);
-  console.log('ALL AVAILABLE PLAYERS', playersList)
+  // console.log('ALL AVAILABLE PLAYERS', playersList)
+  // const playersListCopy = playersList
+  // const playersArray = playersListCopy
+  // console.log('CURRENT PLAYERS', playersArray);
+  // console.log('ALL AVAILABLE PLAYERS', playersList)
   
   return (
     <div className='players'>
-      {playersArray.map((player, index) => {
+      {/* {playersArray.map((player, index) => {
         const playerHand = ['AH'];
+        console.log(player.playerHand);
         return (
           <div key={index}>
             <h3>{player}</h3>
@@ -194,9 +236,11 @@ function Players ({ playerCount }) {
             </div>
           </div>
         )
-      })}
+      })} */}
+
     </div>
   )
 }
+
 
 export default App;

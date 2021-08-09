@@ -9,9 +9,9 @@ function DealCards({drawPile, deckCount, setDeckCount, playerCount, round, setRo
     // take top card from drawPile and give it to player 2
     // decrement deckCount
 
-    let hands = []
-    hands.fill([], 0, playerCount)
-    console.log('HANDS',hands);
+    // let hands = []
+    // hands.fill([], 0, playerCount)
+    // console.log('HANDS',hands);
 
     let c = 0 // cards this round
     // deal cards to players for the current round they are on
