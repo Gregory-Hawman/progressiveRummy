@@ -140,16 +140,6 @@ function App() {
     };
   };
 
-  function PlayPhase() {
-    //
-
-  };
-
-  function LastCardPhase() {
-    //
-
-  };
-
   return (
     <div className="App">
       <header className="App-header">
@@ -241,6 +231,24 @@ function App() {
   );
 };
 
+function TakeCard() {
+  //
+  if (playersList.currentPlayer){
+
+  }
+};
+
+function EndTurn() {
+  if (playersList.currentPlayer){
+
+  }
+}
+
+function LastCardPhase() {
+  //
+
+};
+
 function Players ({playerCount}) {
   let playersCopy = playersList
   let playablePlayers = [];
@@ -258,6 +266,7 @@ function Players ({playerCount}) {
               <h3>{player.name}</h3>
               <h4>Hand</h4>
               <p>{player.hand}</p>
+              {player.currentPlayer ? <button onClick={EndTurn}>End Turn</button> : null}
           </div>
           )
       })}
