@@ -3,23 +3,23 @@ import './App.css';
 import Deck from './components/deck';
 import Discards from './components/discards';
 import DrawnCard from './components/drawnCard';
-import DealCards from './components/deal';
+// import Players from './components/player';
+// import DealCards from './components/deal';
 
 const suits = ['S', 'H', 'C', 'D'];
 const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 const jokers = ['JoR', 'JoB']
 let cards = [];
 const playersList = [
-  {name: 'Player 1', hand: []},
-  {name: 'Player 2', hand: []},
-  {name: 'Player 3', hand: []},
-  {name: 'Player 4', hand: []},
-  {name: 'Player 5', hand: []},
-  {name: 'Player 6', hand: []},
-  {name: 'Player 7', hand: []},
-  {name: 'Player 8', hand: []},
+  {name: 'Player 1', hand: [], startingPosition: false, currentPlayer: true},
+  {name: 'Player 2', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 3', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 4', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 5', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 6', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 7', hand: [], startingPosition: false, currentPlayer: false},
+  {name: 'Player 8', hand: [], startingPosition: false, currentPlayer: false},
 ]
-
 
 function App() {
   //General State
@@ -32,22 +32,22 @@ function App() {
 
   //Game Setup State
   const [playerCount, setPlayerCount] = useState(4);
+  // const [playablePlayers, setPlayablePlayers] = useState([])
   const [playerAmountSelected, setPlayerAmountSelected] = useState(false);
-  const [lessPlayers, setLessPlayers] = useState(true)
 
   //Deal Phase State
   const [round, setRound] = useState(1);
-  const [roundLimit, setRoundLimit] = useState(round + 2)
-  const [startingPosition, setStartingPosition] = useState("Player 1")
+  const [roundLimit, setRoundLimit] = useState(round + 2);
+  const [startingPosition, setStartingPosition] = useState("Player 1");
   
   //Playing Phase State
-  const [currentPlayer, setCurrentPlayer] = useState(startingPosition)
+  const [currentPlayer, setCurrentPlayer] = useState(startingPosition);
   const [drawnCard, setDrawnCard] = useState([]);
   const [hasCardDrawn, setHasCardDrawn] = useState(false);
   
   //Last Card Phase State
-  const [initialOut, setInitialOut] = useState(currentPlayer)
-  const [gameOver, setGameOver] = useState(false)
+  const [initialOut, setInitialOut] = useState(currentPlayer);
+  const [gameOver, setGameOver] = useState(false);
 
 
   function addPlayers () {
@@ -56,7 +56,7 @@ function App() {
     } else {
       setPlayerCount(playerCount + 1)
     }
-  }
+  };
 
   function removePlayers () {
     if (playerCount === 2){
@@ -64,7 +64,7 @@ function App() {
     } else {
       setPlayerCount(playerCount - 1)
     }
-  }
+  };
 
   function Shuffle(array) {
     var m = array.length, t, i;
@@ -78,7 +78,7 @@ function App() {
       array[i] = t;
     }
     setDeckPile(array);
-  }
+  };
 
   const less = '<'
   const more = '>'
@@ -91,7 +91,7 @@ function App() {
       setDecks(Math.ceil(playerCount/2))
     }
     setDeckCount(cards.length)
-  }
+  };
 
   function setDecks(deckAmount) {
     let d = 0
@@ -108,9 +108,47 @@ function App() {
     }
   };
 
-  // console.log('PLAYER COUNT', playerCount)
-  // console.log('MATH CEIL', Math.ceil(playerCount/2))
-  // console.log('CARDS' ,cards.length)
+  function DealCards() {
+    let dealer = round;
+    if (dealer > playerCount){
+      if((dealer - playerCount) > playerCount ){
+        dealer = dealer - playerCount * 2
+      } else {
+        dealer = dealer - playerCount
+      }
+    };
+    let i = dealer - 1;
+    let ss = i; //starting spot
+    let cont = true;
+    while (cont) {
+      if (i === playerCount){
+        i = 0
+      }
+
+      let dealtCard = deckPile.shift()
+      setDeckCount(deckCount - (roundLimit * playerCount))
+      playersList[i].hand.push(dealtCard)
+
+      if (ss === 0 && playersList[ss + (playerCount - 1)].hand.length === roundLimit){
+        cont = false
+      }
+      if (ss > 0 && playersList[ss - 1].hand.length === roundLimit){
+        cont = false
+      }
+
+      i++
+    };
+  };
+
+  function PlayPhase() {
+    //
+
+  };
+
+  function LastCardPhase() {
+    //
+
+  };
 
   return (
     <div className="App">
@@ -130,7 +168,7 @@ function App() {
         {playerAmountSelected ?
           <div>
             <div>
-              {/* <button onClick={DealCards}>Deal</button> */}
+              <button onClick={DealCards}>Deal</button>
               <button onClick={() => Shuffle(cards)}>Shuffle</button>
             </div>
             <div className='deckArea'>
@@ -201,33 +239,30 @@ function App() {
       </header>
     </div>
   );
-}
+};
 
-function Players ({ playerCount }) {
-  // console.log('ALL AVAILABLE PLAYERS', playersList)
-  // const playersListCopy = playersList
-  // const playersArray = playersListCopy
-  // console.log('CURRENT PLAYERS', playersArray);
-  // console.log('ALL AVAILABLE PLAYERS', playersList)
+function Players ({playerCount}) {
+  let playersCopy = playersList
+  let playablePlayers = [];
   
+  for (let i=0; i < playerCount; i++){
+      playablePlayers.push(playersCopy[i])
+  }
+
   return (
-    <div className='players'>
-      {/* {playersArray.map((player, index) => {
-        const playerHand = ['AH'];
-        console.log(player.playerHand);
-        return (
+      <div className='players'>
+      {playablePlayers.map((player, index) => {
+          return (
           <div key={index}>
-            <h3>{player}</h3>
-            <div className= 'hand'>
-              {playerHand}
-            </div>
+              {player.currentPlayer ? "Current Player" : null}
+              <h3>{player.name}</h3>
+              <h4>Hand</h4>
+              <p>{player.hand}</p>
           </div>
-        )
-      })} */}
-
-    </div>
+          )
+      })}
+      </div>
   )
-}
-
+};
 
 export default App;
