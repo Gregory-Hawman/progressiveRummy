@@ -1,17 +1,23 @@
 import React from 'react';
 import '..//App.css';
 
-function Deck({ deckPile, deckCount, setDeckCount, setDrawnCard, hasCardDrawn, setHasCardDrawn, setIsRed }) {
+function Deck({ deckPile, deckCount, setDeckCount, discardPile, discardCount, setDiscardCount, setDrawnCard, hasCardDrawn, setHasCardDrawn, setIsRed }) {
 
     const handleDrawCard = () => {
-      let drawnCard = deckPile.shift()
-      setHasCardDrawn(true)
-      setDeckCount(deckCount - 1)
-      setDrawnCard(drawnCard)
-      if (drawnCard.includes('H') || drawnCard.includes('D') || drawnCard.includes('R')) {
-        setIsRed(true)
+      if (discardPile.length === 0){
+        let initialFlip = deckPile.shift()
+        setDiscardCount(discardCount + 1)
+        discardPile.splice(0, 0, initialFlip)
       } else {
-        setIsRed(false)
+        let drawnCard = deckPile.shift()
+        setHasCardDrawn(true)
+        setDeckCount(deckCount - 1)
+        setDrawnCard(drawnCard)
+        if (drawnCard.includes('H') || drawnCard.includes('D') || drawnCard.includes('R')) {
+          setIsRed(true)
+        } else {
+          setIsRed(false)
+        }
       }
     }
   

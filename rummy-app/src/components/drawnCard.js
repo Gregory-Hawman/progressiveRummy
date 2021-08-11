@@ -19,13 +19,10 @@ function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDisc
 
   return (
     <div>
-      <div className='drawnButtons'>
-        <button>Keep</button>
-        <button onClick={hasCardDrawn ? discardCard : null}>Discard</button>
-      </div>
-      
       <div className='drawnCard'>
         <h1 className={isRed ? 'drawnRed' : 'drawnBlack'}>{drawnCard}</h1>
+        <button>Keep</button>
+        <button onClick={hasCardDrawn ? discardCard : null}>Discard</button>
       </div>
     </div>
       
