@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '..//App.css';
+import { TakeCard } from '../App';
 
-function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDiscardCount, hasCardDrawn, setHasCardDrawn, isRed, setIsDiscardRed }) {
+function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDiscardCount, hasCardDrawn, setHasCardDrawn, isRed, setIsDiscardRed, round, playerCount }) {
 
 
   const discardCard = () => {
@@ -21,7 +22,7 @@ function DrawnCard({ drawnCard, discardPile, setDrawnCard, discardCount, setDisc
     <div>
       <div className='drawnCard'>
         <h1 className={isRed ? 'drawnRed' : 'drawnBlack'}>{drawnCard}</h1>
-        <button>Keep</button>
+        <button onClick={() => TakeCard(drawnCard, round, playerCount)}>Keep</button>
         <button onClick={hasCardDrawn ? discardCard : null}>Discard</button>
       </div>
     </div>
