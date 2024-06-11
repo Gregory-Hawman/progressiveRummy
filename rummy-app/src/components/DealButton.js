@@ -1,5 +1,3 @@
-import { playablePlayers } from "./player";
-
 function DealCards(round, roundLimit, deckPile, deckCount, setDeckCount, playerCount) {
   let dealer = round;
   if (dealer > playerCount){

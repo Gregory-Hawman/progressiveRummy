@@ -118,3 +118,10 @@
 .players div{
   margin: 0rem 5rem
 }
+
+.draw-pile {
+    border-radius: 15px;
+    border: 1px solid white;
+    width: 20rem;
+    height: 30rem;
+}
