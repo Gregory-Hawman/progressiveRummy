@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .app {
+        @apply
+        flex flex-col items-center justify-center
+        w-screen h-screen
+        bg-green-500
+        text-white
+    }
+
+    .table {
+        @apply
+        flex flex-col items-center justify-center
+        w-[100rem] h-[80em]
+        bg-green-700
+        text-white
+    }
+
+    .draw-pile {
+        @apply
+        border-[5px] border-solid border-white rounded-md
+        w-[10rem] h-[15rem];
+    }
+}
