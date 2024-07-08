@@ -19,9 +19,112 @@
         text-white
     }
 
+    .octagon-table {
+        @apply
+        relative
+        bg-green-700
+        w-[75rem] h-[75rem] m-[5rem]
+        flex items-center justify-center
+    }
+
+    .octagon-table-2 {
+        @apply
+        absolute
+        bg-orange-950
+        w-[80rem] h-[80rem] m-[5rem]
+    }
+
     .draw-pile {
         @apply
         border-[5px] border-solid border-white rounded-md
         w-[10rem] h-[15rem];
+    }
+
+
+
+
+    .card-face, .card-face-red {
+        @apply
+        bg-white
+        w-[7rem] h-[10rem]
+        flex items-center justify-center
+        border-[1px] border-solid border-black rounded-md
+        m-1
+    }
+
+    .card-face-red {
+        @apply
+        text-red-600
+    }
+
+    .card-face {
+        @apply
+        text-black
+    }
+
+    .left, .right {
+        @apply
+        w-[15%] h-[100%]
+        text-[1rem]
+        flex flex-col items-center
+    }
+
+    .center {
+        @apply
+        w-[100%] h-[100%]
+        text-[2rem]
+        flex items-center justify-evenly
+    }
+
+    .center-left, .center-center, .center-right {
+        @apply
+        w-[30%] h-[100%]
+        flex flex-col justify-evenly
+        
+    }
+
+    .center-left-cramped div, .center-right-cramped div{
+        @apply
+        my-[-1rem]
+    }
+
+    .face-card-image{
+        @apply
+        mx-[.125rem]
+    }
+
+    .joker-text{
+        @apply
+        flex flex-col items-center justify-center
+        w-[100%]
+        text-[0.75rem]
+    }
+
+    .joker-text span{
+        @apply
+        m-[-0.20rem] p-0
+    }
+}
+
+@layer utilities {
+    .octagon-table-2 {
+        top: -40px; /* Adjust based on desired border size */
+        left: -40px;
+        right: -20px;
+        bottom: -20px;
+        z-index: -2;
+    }
+
+    .octagon-table-path {
+        clip-path: polygon(
+          30% 0%, /* Top left */
+          70% 0%, /* Top right */
+          100% 30%, /* Right top */
+          100% 70%, /* Right bottom */
+          70% 100%, /* Bottom right */
+          30% 100%, /* Bottom left */
+          0% 70%, /* Left bottom */
+          0% 30% /* Left top */
+        );
     }
 }

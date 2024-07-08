@@ -51,7 +51,15 @@ export default function App() {
         <div className="App">
             {gameStarted ? 
                 <Table 
-
+                    hasCardDrawn={hasCardDrawn}
+                    setHasCardDrawn={setHasCardDrawn}
+                    discardPile={discardPile}
+                    setDiscardPile={setDiscardPile}
+                    discardCount={discardPile.length}
+                    drawnCard={drawnCard}
+                    setDrawnCard={setDrawnCard}
+                    isDiscardRed={isDiscardRed}
+                    setIsDiscardRed={setIsDiscardRed}
                 />
                 : 
                 <GameSetup 
