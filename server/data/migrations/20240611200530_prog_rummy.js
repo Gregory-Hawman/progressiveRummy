@@ -18,7 +18,7 @@ exports.up = function(knex) {
 
     })
 
-    .createTable('games_players', (table) => {
+    .createTable('game_players', (table) => {
         table.increments('id');
         table.integer('game_id').unsigned().notNullable().references('id').inTable('games').onUpdate('CASCADE').onDelete('CASCADE');
         table.integer('player_id').unsigned().notNullable().references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE');
@@ -29,6 +29,7 @@ exports.up = function(knex) {
         table.string('card_name', 128).notNullable();
         table.string('card_suit', 128).notNullable();
         table.integer('card_value').notNullable();
+        table.string('location', 128).notNullable(); // draw_pile, discard_pile, player_hand
     })
 
     .createTable('player_cards', (table) => {
@@ -43,6 +44,7 @@ exports.up = function(knex) {
         table.integer('game_id').unsigned().notNullable().references('id').inTable('games').onUpdate('CASCADE').onDelete('CASCADE');
         table.integer('round_number').notNullable();
         table.integer('turn_number').notNullable();
+        table.integer('first_out')
         table.integer('winner');
     })
 
@@ -60,7 +62,7 @@ exports.up = function(knex) {
         table.integer('game_id').unsigned().notNullable().references('id').inTable('games').onUpdate('CASCADE').onDelete('CASCADE');
         table.integer('player_id').unsigned().notNullable().references('id').inTable('players').onUpdate('CASCADE').onDelete('CASCADE');
         table.integer('round_id').unsigned().notNullable().references('id').inTable('rounds').onUpdate('CASCADE').onDelete('CASCADE');
-        table.integer('score').notNullable();
+        table.integer('score').defaultTo(0);
     });
 
 };
@@ -76,7 +78,7 @@ exports.down = function(knex) {
     .dropTableIfExists('rounds')
     .dropTableIfExists('player_cards')
     .dropTableIfExists('cards')
-    .dropTableIfExists('games_players')
+    .dropTableIfExists('game_players')
     .dropTableIfExists('players')
     .dropTableIfExists('games')
 };
