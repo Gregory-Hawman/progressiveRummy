@@ -11,6 +11,114 @@
         text-white
     }
 
+    /* === NAVBAR === NAVBAR === NAVBAR === */
+
+    .nav {
+        @apply
+        flex justify-between items-center
+        p-3
+        bg-slate-900
+        border-[1px] border-solid border-black
+        absolute top-0 left-0 right-0
+    }
+
+    .nav h1 {
+        @apply
+        text-2xl
+        text-white
+    }
+
+    .nav li {
+        @apply
+        mx-2
+        text-white
+        border-[1px] border-solid border-white rounded-md
+        px-2 py-1
+        cursor-pointer
+    }
+
+    .nav li:hover {
+        @apply
+        bg-slate-700
+    }
+
+    /* === HOME PAGE === HOME PAGE === HOME PAGE ===  */
+
+    .home {
+        @apply
+        flex flex-col items-center justify-between
+        w-screen h-screen
+        bg-green-800
+        text-white
+        overflow-y-hidden
+    }
+
+    .home-header {
+        @apply
+        flex flex-col items-center justify-between
+        text-4xl
+        mt-[15rem]
+        mb-[15rem]
+    }
+
+    .home-nav {
+        @apply
+        flex justify-between items-center
+        w-[100%]
+    }
+
+    .home-nav * {
+        @apply
+        mx-2
+        text-white
+        border-[1px] border-solid border-white rounded-md
+        px-12 py-12
+        cursor-pointer
+    }
+
+    .home-nav *:hover {
+        @apply
+        bg-slate-700
+    }
+
+    .home-footer {
+        @apply
+        text-2xl
+        mb-[15rem]
+    }
+
+    /* === RULES === RULES === RULES ==== */
+    .rules {
+        @apply
+        flex flex-col items-center justify-between
+        w-screen h-screen
+        bg-green-800
+        text-white
+        overflow-hidden
+        py-[10rem]
+        border-[1px] border-solid border-white rounded-md
+    }
+
+    .rules ul {
+        @apply
+        text-[1rem]
+        w-[100%]
+        ml-[5rem]
+        my-1
+        border-[1px] border-solid border-blue-800 rounded-md
+    }
+
+    .rules h2 {
+        @apply
+        text-4xl
+        border-[1px] border-solid border-white rounded-md
+    }
+
+
+
+
+    /* === GAME PAGE === GAME PAGE === GAME PAGE === */
+
     .table {
         @apply
         flex flex-col items-center justify-center
@@ -40,8 +148,28 @@
         w-[10rem] h-[15rem];
     }
 
+    /* === DECK EDITOR === DECK EDITOR === DECK EDITOR === */
+    .deck-editor {
+        @apply
+        flex flex-col items-center justify-between
+        w-screen h-screen
+        bg-green-800
+        text-white
+        overflow-hidden
+        py-[10rem]
+        border-[1px] border-solid border-white rounded-md
+    }
 
+    .deck {
+        @apply
+        flex flex-wrap items-center justify-between
+        w-[100%]
+        bg-green-800
+        text-white
+        border-[1px] border-solid border-white rounded-md
+    }
 
+    /* === CARD FACE === CARD FACE === CARD FACE === */
 
     .card-face, .card-face-red {
         @apply

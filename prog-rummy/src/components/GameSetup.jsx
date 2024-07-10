@@ -7,7 +7,7 @@ export default function GameSetup(props) {
     const more = '>'
 
     return (
-        <div>
+        <div className="game-setup">
             {props.playerAmountSelected ? 
                 null : 
                 <div>

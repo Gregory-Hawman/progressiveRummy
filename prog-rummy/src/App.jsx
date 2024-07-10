@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
 
+import Home from './pages/Home.jsx';
+import Rules from './pages/Rules.jsx';
+import DeckEditor from './pages/DeckEditor.jsx';
+import Navbar from './components/Navbar.jsx';
 import Table from './components/Table.jsx';
 import GameSetup from './components/GameSetup.jsx';
 import Shuffle from '../../prog-rummy/src/actions/Shuffle.js';
@@ -48,24 +53,30 @@ export default function App() {
 
 
     return (
-        <div className="App">
-            {gameStarted ? 
-                <Table 
-                    hasCardDrawn={hasCardDrawn}
-                    setHasCardDrawn={setHasCardDrawn}
-                    discardPile={discardPile}
-                    setDiscardPile={setDiscardPile}
-                    discardCount={discardPile.length}
-                    drawnCard={drawnCard}
-                    setDrawnCard={setDrawnCard}
-                    isDiscardRed={isDiscardRed}
-                    setIsDiscardRed={setIsDiscardRed}
-                />
-                : 
-                <GameSetup 
+        <BrowserRouter>
+            <div className="App">
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path='/rules' element={<Rules />} />
+                    <Route path='/deck-editor' element={<DeckEditor />} />
+                    <Route path="/game-setup" element={<GameSetup/>} />
+                    <Route path="/table" element={
+                        <Table 
+                            hasCardDrawn={hasCardDrawn}
+                            setHasCardDrawn={setHasCardDrawn}
+                            discardPile={discardPile}
+                            setDiscardPile={setDiscardPile}
+                            discardCount={discardPile.length}
+                            drawnCard={drawnCard}
+                            setDrawnCard={setDrawnCard}
+                            isDiscardRed={isDiscardRed}
+                            setIsDiscardRed={setIsDiscardRed}
+                        />
+                    }/>
 
-                /> 
-            }
-        </div>
+                </Routes>
+            </div>
+        </BrowserRouter>
     );
 };
